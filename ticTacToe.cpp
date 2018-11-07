@@ -33,7 +33,6 @@ private:
 
 };
 
-
 void playArea::setGrid() {
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
@@ -41,8 +40,6 @@ void playArea::setGrid() {
 		}
 	}
 }
-
-
 
 vector<vector<char>> playArea::fillPlayArea() {
 	vector<vector<char>>playGrid(2);
@@ -54,7 +51,6 @@ vector<vector<char>> playArea::fillPlayArea() {
 	return playGrid;
 }
 
-
 void playArea::printPlayArea() {
 	for (int outer = 0; outer < grid->size(); outer++) {
 		for (int inner = 0; inner < grid->size(); inner++) {
@@ -62,7 +58,6 @@ void playArea::printPlayArea() {
 		}
 	}
 }
-
 
 int main() {
 	playArea* newPlayArea = new playArea();
@@ -223,7 +218,6 @@ void playGrid::printGrid() {
 		cout << endl;
 	}
 	cout << endl;
-
 }
 
 
@@ -380,31 +374,5 @@ int main() {
 	else if (toLowerResp != 'n' || toLowerResp != 'y') {
 		cout << "Invalid response." << endl;
 	}
-
-
-	// infinite loop:
-	/*while (startGame) {
-
-		
-
-
-	}*/
-
-	/*
-	else if(toLowerResp == 'n'){
-	cout << "Thank you." << endl;
-	}
-	else {
-	cout << "Invalid answer." << endl;
-	}
-	*/
-
-	/*
-	playGrid* newPlayGrid = new playGrid();
-	// newPlayGrid->fillGrid();
-	newPlayGrid->printGrid();
-
-	delete newPlayGrid;
-	*/
 	return 0;
 }

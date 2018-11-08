@@ -1,95 +1,46 @@
-// ticTacToe.cpp : Defines the entry point for the console application.
-//
-
 #include "stdafx.h"
 #include <iostream>
 
 using namespace std;
-// Old code 11/5
-/*
-class playArea {
-public:
-	playArea() {
-		cout << "Done" << endl;
-		
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				grid[i][j].push_back('.');
-			}
-		}
-		
-	};
 
-	void setGrid();
-	void printPlayArea();
-	// vector<vector<char>> fillPlayArea();
-	// void setPlayerMove(int, int);
-	// void setOppMove(int, int);
-
-private:
-	vector<vector<char>>* grid;
-	vector<int> playerMoves;
-	vector<int> oppMoves;
-
-};
-
-void playArea::setGrid() {
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			grid[i][j].push_back('.');
-		}
-	}
-}
-
-vector<vector<char>> playArea::fillPlayArea() {
-	vector<vector<char>>playGrid(2);
-	for (int i = 0; i < 2; i++) {
-		for (int j = 0; j < 2; j++) {
-			playGrid[i][j] = '.';
-		}
-	}
-	return playGrid;
-}
-
-void playArea::printPlayArea() {
-	for (int outer = 0; outer < grid->size(); outer++) {
-		for (int inner = 0; inner < grid->size(); inner++) {
-			cout << (*grid)[outer][inner] << endl;
-		}
-	}
-}
-
-int main() {
-	playArea* newPlayArea = new playArea();
-	newPlayArea->setGrid();
-	(*newPlayArea);
-	(newPlayArea)->printPlayArea();
-	delete newPlayArea;
-	return 0;
-}
-*/
-
-// New code 11/6
+// Finished running game on 11/7
+// New code started on 11/5
 
 // Main class for implementation of game
 // used contructor for filling 2d array as grid
 // print function and setters for player movements
+// booleans to check for winner and check sum for testing for a tie
 class playGrid {
 
 public:
 	playGrid();
+
+	// destructor for class
+	~playGrid() {
+		cout << "--Game memory cleared--" << endl;
+	}
+
 	// void fillGrid();
 	void printGrid();
+
+	// sets coordinates for each player
 	void setOppMove(int, int);
 	void setPlayerMove(int, int);
 
-	bool getWinner();
-	void retWinnerOPP();
-	void retWinnerOutPlayer();
+	bool getWinner(); // returns winnerOut for game loop and exiting
+	void retWinnerOPP(); // checks for playOPP returning true
+	void retWinnerOutPlayer(); // checks for playOne returning true
+
+	void getTie(); // uses checkSum and winnerOut to check for tie
 
 private:
-	char contain[3][3];
+	// counter for how many spaces are left. 
+	// If zero and getWinner() has not returned true - game is a tie
+	int checkSum = 9;
 
+	char grid[3][3];
+
+	// checks for if player or opp winning
 	bool winnerOut = false;
 	bool playOne = false;
 	bool playOPP = false;
@@ -101,6 +52,18 @@ bool playGrid::getWinner() {
 	return winnerOut;
 }
 
+
+// check for if a tie has occured
+void playGrid::getTie() {
+	// test snippet for counting number of spaces left... 
+	// cout << checkSum << endl;
+
+	if (checkSum == 0 && winnerOut != true) {
+		cout << "The game is a tie." << endl;
+		winnerOut = true;
+	}
+}
+
 ////////////////
 // play check //
 ////////////////
@@ -108,33 +71,33 @@ bool playGrid::getWinner() {
 // sets boolean for playOne to true and the condition for exiting loop to true
 void playGrid::retWinnerOutPlayer() {
 
-	// horizon
-	if (contain[0][0] == 'x' && contain[0][1] == 'x' && contain[0][2] == 'x') {
+	// horizon check
+	if (grid[0][0] == 'x' && grid[0][1] == 'x' && grid[0][2] == 'x') {
 		playOne = true;
 	}
-	else if (contain[1][0] == 'x' && contain[1][1] == 'x' && contain[1][2] == 'x') {
+	else if (grid[1][0] == 'x' && grid[1][1] == 'x' && grid[1][2] == 'x') {
 		playOne = true;
 	}
-	else if (contain[2][0] == 'x' && contain[2][1] == 'x' && contain[2][2] == 'x') {
-		playOne = true;
-	}
-
-	// diag
-	else if (contain[0][0] == 'x' && contain[1][1] == 'x' && contain[2][2] == 'x') {
-		playOne = true;
-	}
-	else if (contain[2][0] == 'x' && contain[1][1] == 'x' && contain[0][2] == 'x') {
+	else if (grid[2][0] == 'x' && grid[2][1] == 'x' && grid[2][2] == 'x') {
 		playOne = true;
 	}
 
-	//vert
-	else if (contain[0][0] == 'x' && contain[1][0] == 'x' && contain[2][0] == 'x') {
+	// diag check
+	else if (grid[0][0] == 'x' && grid[1][1] == 'x' && grid[2][2] == 'x') {
 		playOne = true;
 	}
-	else if (contain[0][1] == 'x' && contain[1][1] == 'x' && contain[2][1] == 'x') {
+	else if (grid[2][0] == 'x' && grid[1][1] == 'x' && grid[0][2] == 'x') {
 		playOne = true;
 	}
-	else if (contain[0][2] == 'x' && contain[1][2] == 'x' && contain[2][2] == 'x') {
+
+	//vertical check
+	else if (grid[0][0] == 'x' && grid[1][0] == 'x' && grid[2][0] == 'x') {
+		playOne = true;
+	}
+	else if (grid[0][1] == 'x' && grid[1][1] == 'x' && grid[2][1] == 'x') {
+		playOne = true;
+	}
+	else if (grid[0][2] == 'x' && grid[1][2] == 'x' && grid[2][2] == 'x') {
 		playOne = true;
 	}
 
@@ -153,33 +116,33 @@ void playGrid::retWinnerOutPlayer() {
 // sets boolean for playOPP to true and the condition for exiting loop to true
 void playGrid::retWinnerOPP() {
 	
-	// horizon
-	if (contain[0][0] == 'o' && contain[0][1] == 'o' && contain[0][2] == 'o') {
+	// horizon check
+	if (grid[0][0] == 'o' && grid[0][1] == 'o' && grid[0][2] == 'o') {
 		playOPP = true;
 	}
-	else if (contain[1][0] == 'o' && contain[1][1] == 'o' && contain[1][2] == 'o') {
+	else if (grid[1][0] == 'o' && grid[1][1] == 'o' && grid[1][2] == 'o') {
 		playOPP = true;
 	}
-	else if (contain[2][0] == 'o' && contain[2][1] == 'o' && contain[2][2] == 'o') {
-		playOPP = true;
-	}
-
-	// diag
-	else if (contain[0][0] == 'o' && contain[1][1] == 'o' && contain[2][2] == 'o') {
-		playOPP = true;
-	}
-	else if (contain[2][0] == 'o' && contain[1][1] == 'o' && contain[0][2] == 'o') {
+	else if (grid[2][0] == 'o' && grid[2][1] == 'o' && grid[2][2] == 'o') {
 		playOPP = true;
 	}
 
-	//vert
-	else if (contain[0][0] == 'o' && contain[1][0] == 'o' && contain[2][0] == 'o') {
+	// diag check
+	else if (grid[0][0] == 'o' && grid[1][1] == 'o' && grid[2][2] == 'o') {
 		playOPP = true;
 	}
-	else if (contain[0][1] == 'o' && contain[1][1] == 'o' && contain[2][1] == 'o') {
+	else if (grid[2][0] == 'o' && grid[1][1] == 'o' && grid[0][2] == 'o') {
 		playOPP = true;
 	}
-	else if (contain[0][2] == 'o' && contain[1][2] == 'o' && contain[2][2] == 'o') {
+
+	//vertical check
+	else if (grid[0][0] == 'o' && grid[1][0] == 'o' && grid[2][0] == 'o') {
+		playOPP = true;
+	}
+	else if (grid[0][1] == 'o' && grid[1][1] == 'o' && grid[2][1] == 'o') {
+		playOPP = true;
+	}
+	else if (grid[0][2] == 'o' && grid[1][2] == 'o' && grid[2][2] == 'o') {
 		playOPP = true;
 	}
 
@@ -196,7 +159,7 @@ void playGrid::retWinnerOPP() {
 playGrid::playGrid() {
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
-			contain[i][j] = '.';
+			grid[i][j] = '.';
 		}
 	}
 }
@@ -213,7 +176,7 @@ void playGrid::fillGrid(){
 void playGrid::printGrid() {
 	for (int outer = 0; outer < 3; outer++) {
 		for (int inner = 0; inner < 3; inner++) {
-			cout << contain[outer][inner] << " ";
+			cout << grid[outer][inner] << " ";
 		}
 		cout << endl;
 	}
@@ -225,46 +188,46 @@ void playGrid::printGrid() {
 // If position already taken, skips player move and moves to next player.
 // Last if checks coordinate for out of range ("greater than or equal to 3/size of array")
 void playGrid::setPlayerMove(int x, int y) {
-
-	if (contain[x][y] == '.') {
-		contain[x][y] = 'x';
+	if (grid[x][y] == '.') {
+		grid[x][y] = 'x';
+		checkSum--;
 	}
 
-	else if (contain[x][y] == 'o') {
+	else if (grid[x][y] == 'o') {
 		cout << "Invalid move" << endl;
 		cout << endl;
-		contain[x][y] = 'o';
+		grid[x][y] = 'o';
 	}
 
-	else if (contain[x][y] == 'x') {
+	else if (grid[x][y] == 'x') {
 		cout << "Player already obtained that position." << endl;
 		cout << endl;
-		contain[x][y] = 'x';
+		grid[x][y] = 'x';
 	}
 
 	else if (x >= 3 || y >= 3) {
 		cout << "Coordinates out of range." << endl;
 		cout << endl;
 	}
-	
 }
 
 // Diddo to above
 void playGrid::setOppMove(int x, int y) {
-	if (contain[x][y] == '.') {
-		contain[x][y] = 'o';
+	if (grid[x][y] == '.') {
+		grid[x][y] = 'o';
+		checkSum--;
 	}
 
-	else if (contain[x][y] == 'x') {
+	else if (grid[x][y] == 'x') {
 		cout << "Invalid move" << endl;
 		cout << endl;
-		contain[x][y] = 'x';
+		grid[x][y] = 'x';
 	}
 
-	else if (contain[x][y] == 'o') {
+	else if (grid[x][y] == 'o') {
 		cout << "Player already obtained that position." << endl;
 		cout << endl;
-		contain[x][y] = 'o';
+		grid[x][y] = 'o';
 	}
 
 	else if (x >= 3 || y >= 3) {
@@ -295,10 +258,9 @@ int main() {
 	}
 	*/
 
-	int x, y;
-	char resp = 'y';
+	int x, y; // coordinates for player moves
+	char resp = 'n';
 	char toLowerResp;
-	// bool gameWon = false;
 
 	// Starting sequence
 	cout << "Do you wish to play a game(y/n): ";
@@ -332,37 +294,39 @@ int main() {
 			cin >> y;
 			cout << endl;
 
-			newPlayGrid->setPlayerMove(x, y);
+			newPlayGrid->setPlayerMove(x-1, y-1);
 			newPlayGrid->printGrid();
 			newPlayGrid->retWinnerOutPlayer();
+
+			newPlayGrid->getTie(); // check for tie
 
 			// checking to see if player won after last move
 			// frees memory for if new game wants to be played
 			if (newPlayGrid->getWinner() == true) {
-				break;
 				delete newPlayGrid;
+				break;
 			}
-
-
 
 			/////////////////////////
 			// player 2 move "opp" //
 			/////////////////////////
-			cout << "Opp move..." << endl << "enter x: ";
+			cout << "Opponent move..." << endl << "enter x: ";
 			cin >> x;
 			cout << "enter y: ";
 			cin >> y;
 			cout << endl;
 
-			newPlayGrid->setOppMove(x, y);
+			newPlayGrid->setOppMove(x-1, y-1);
 			newPlayGrid->printGrid();
 			newPlayGrid->retWinnerOPP();
+
+			newPlayGrid->getTie(); //check for tie
 
 			// checking to see if opp won after last move
 			// frees memory for if new game wants to be played
 			if (newPlayGrid->getWinner() == true) {
-				break;
 				delete newPlayGrid;
+				break;
 			}
 		}	
 	}

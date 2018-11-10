@@ -8,12 +8,10 @@ class playGrid {
 public:
 	playGrid();
 
-	// destructor for class
 	~playGrid() {
 		cout << "--Game memory cleared--" << endl;
 	}
-
-	// void fillGrid();
+	
 	void printGrid();
 
 	void setOppMove(int, int);
